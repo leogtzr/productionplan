@@ -7,8 +7,10 @@ public class WorkOrderInformation {
     private double runHours;
     private double setupHours;
     private int qty;
-    // TODO: this field is filled by the "Age by WC.xlsx" file.
+
+    // TODO: these fields are filled by the "Age by WC.xlsx" file.
     private int age;
+
 
     public WorkOrderInformation(String partNumber, String workOrder, double runHours, double setupHours, int qty) {
         this.partNumber = partNumber;
@@ -18,8 +20,7 @@ public class WorkOrderInformation {
         this.qty = qty;
     }
 
-    public WorkOrderInformation() {
-    }
+    public WorkOrderInformation() { }
 
     public String getPartNumber() {
         return partNumber;
