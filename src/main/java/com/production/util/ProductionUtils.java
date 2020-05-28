@@ -74,8 +74,6 @@ public final class ProductionUtils {
 
                 final SimpleWorkOrderInformation workOrderInfo = extractSimpleWorkOrderFromAgeRow(row);
                 workOrdersFromAgeFile.put(workOrderInfo.getWorkOrder(), workOrderInfo);
-
-                // System.out.println(workOrderInfo);
             }
         }
 
@@ -86,7 +84,7 @@ public final class ProductionUtils {
                 workOrder.setAge(simpleWorkOrderInformation.getAge());
                 workOrder.setSalesPrice(simpleWorkOrderInformation.getSalesPrice());
             } else {
-                System.out.printf("[%s] didn't exist in the file.\n", workOrder.getWorkOrder());
+                // System.out.printf("[%s] didn't exist in the file.\n", workOrder.getWorkOrder());
             }
         });
     }
