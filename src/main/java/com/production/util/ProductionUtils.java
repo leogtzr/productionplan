@@ -1,14 +1,14 @@
 package com.production.util;
 
+import com.production.domain.AgeByWCFields;
+import com.production.domain.SimpleWorkOrderInformation;
 import com.production.domain.WorkOrderInformation;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public final class ProductionUtils {
 
@@ -20,7 +20,8 @@ public final class ProductionUtils {
     private static final int QTY_CELL_INDEX = 12;
     private static final double RUN_EFFICIENCY = 0.8;
 
-    public static List<WorkOrderInformation> extractWorkOrdersFromSheetFile(final String filePath) throws IOException, InvalidFormatException {
+    public static List<WorkOrderInformation> extractWorkOrdersFromSheetFile(final String filePath)
+            throws IOException, InvalidFormatException {
         final List<WorkOrderInformation> workOrderInfoItems = new ArrayList<>();
         // Change this for something like a constant ...
 
@@ -47,11 +48,69 @@ public final class ProductionUtils {
                 workOrderInfoItems.add(to(partCell, workOrderCell, runCell, setupCell, qtyCell));
             }
         }
-
         return workOrderInfoItems;
     }
 
-    private static WorkOrderInformation to(Cell partCell, Cell workOrderCell, Cell runCell, Cell setupCell, Cell qtyCell) {
+    public static void reconcileInformationFromAgeFile(
+            final String ageAndPriceFilePath
+    , final List<WorkOrderInformation> workOrderItems) throws IOException, InvalidFormatException {
+
+        final Map<String, SimpleWorkOrderInformation> workOrdersFromAgeFile = new HashMap<>();
+
+        // Generate a map from the spread sheet ...
+        try (final Workbook workbook = WorkbookFactory.create(new File(ageAndPriceFilePath))) {
+            final Sheet fabLoadByWCSheet = workbook.getSheet(Constants.AGE_BY_WC_SHEET_NAME);
+            final Iterator<Row> rowIterator = fabLoadByWCSheet.rowIterator();
+            while (rowIterator.hasNext()) {
+                final Row row = rowIterator.next();
+                final Cell firstCell = row.getCell(0);
+                final String firstCellStringCellValue = firstCell.getStringCellValue();
+                switch (firstCellStringCellValue.trim()) {
+                    case "WC Name":
+                    case "Count":
+                    case "Sum":
+                        continue;
+                }
+
+                final SimpleWorkOrderInformation workOrderInfo = extractSimpleWorkOrderFromAgeRow(row);
+                workOrdersFromAgeFile.put(workOrderInfo.getWorkOrder(), workOrderInfo);
+
+                // System.out.println(workOrderInfo);
+            }
+        }
+
+        // Reconcile the information ...
+        workOrderItems.forEach(workOrder -> {
+            if (workOrdersFromAgeFile.containsKey(workOrder.getWorkOrder())) {
+                final SimpleWorkOrderInformation simpleWorkOrderInformation = workOrdersFromAgeFile.get(workOrder.getWorkOrder());
+                workOrder.setAge(simpleWorkOrderInformation.getAge());
+                workOrder.setSalesPrice(simpleWorkOrderInformation.getSalesPrice());
+            } else {
+                System.out.printf("[%s] didn't exist in the file.\n", workOrder.getWorkOrder());
+            }
+        });
+    }
+
+    private static SimpleWorkOrderInformation extractSimpleWorkOrderFromAgeRow(final Row row) {
+        final Cell workOrderCell = row.getCell(AgeByWCFields.WORK_ORDER_NUMBER.get());
+        final Cell ageCell = row.getCell(AgeByWCFields.AGE.get());
+        final Cell salesPriceCell = row.getCell(AgeByWCFields.SALES_PRICE.get());
+
+        final SimpleWorkOrderInformation workOrderInfo = new SimpleWorkOrderInformation(workOrderCell.getStringCellValue());
+
+        workOrderInfo.setAge((int)ageCell.getNumericCellValue());
+        workOrderInfo.setSalesPrice(salesPriceCell.getNumericCellValue());
+
+        return workOrderInfo;
+    }
+
+    private static WorkOrderInformation to(
+            final Cell partCell
+            , final Cell workOrderCell
+            , final Cell runCell
+            , final Cell setupCell
+            , final Cell qtyCell
+    ) {
         final WorkOrderInformation workOrderInformation = new WorkOrderInformation();
         workOrderInformation.setPartNumber(partCell.getStringCellValue().trim());
         workOrderInformation.setWorkOrder(workOrderCell.getStringCellValue().trim());
