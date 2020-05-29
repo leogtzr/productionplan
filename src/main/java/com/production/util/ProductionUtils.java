@@ -115,7 +115,7 @@ public final class ProductionUtils {
 
         final double runNumericCellValue = runCell.getNumericCellValue();
 
-        workOrderInformation.setRunHours(runNumericCellValue * RUN_EFFICIENCY);
+        workOrderInformation.setRunHours(runNumericCellValue / RUN_EFFICIENCY);
         workOrderInformation.setSetupHours(setupCell.getNumericCellValue());
         workOrderInformation.setQty((int)qtyCell.getNumericCellValue());
 

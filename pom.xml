@@ -3,11 +3,11 @@
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
 
-	<groupId>com.comedor.menu</groupId>
-	<artifactId>comedor-menu-api</artifactId>
+	<groupId>com.production</groupId>
+	<artifactId>productionplan-api</artifactId>
 	<version>0.0.2-SNAPSHOT</version>
-	<name>comedor-menu-api</name>
-	<description>Comedor Menu API</description>
+	<name>productionplan</name>
+	<description>productionplan API</description>
 
 	<properties>
 		<java.version>11</java.version>
