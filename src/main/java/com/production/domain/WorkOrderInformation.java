@@ -10,7 +10,6 @@ public class WorkOrderInformation {
     private double setupHours;
     private int qty;
 
-    // TODO: these fields are filled by the "Age by WC.xlsx" file.
     private int age;
     public double salesPrice;
 

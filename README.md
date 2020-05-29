@@ -1,45 +1,12 @@
-# comedor-menu-api
+# Production Plan
 
-## How to use the api:
-```java
-File file = new File(path);
-String absolutePath = file.getAbsolutePath();
-Workbook workbook = WorkbookFactory.create(new File(absolutePath));
-Sheet sheet = workbook.getSheetAt(0);
-```
+El acomodo basado en turnos es con la suma del runtime + setup
 
-## To extract a from a XLXs sheet
-```java
-Optional<Menu> menu = MenuUtils.extractMenuFromSheet(sheet);
-menu.ifPresent(m -> {
-    // ...
-});
-```
+## Primer turno -> 8.5 hrs
+## Segundo turno -> 8.1 hrs
+## Tercero turno -> 5.5 hrs
 
-## Getting day menu
-```java
-DayMeal menuMonday = menu.getMenu().get(Day.MONDAY);
-List<String> mondaySalads = menuMonday.getSalads();
-Food mondayBreakfast = menuMonday.getBreakfast();
+Si no se selecciona nada de la pantalla intermedia ... se basaría todo en el campo *Age* ...
 
-// Getting all the food alternatives:
-List<Food> foodAlternatives = menuMonday.getLunchDinnerFoodAlternatives();
-```
-
-### Food class
-```java
-public final class Food {
-    private String name;
-    private int kCal;
-    private MealType mealType;
-}
-```
-
-### DayMenu class
-````java
-public final class DayMeal {
-    private Food breakfast;
-    private List<Food> lunchDinnerFoodAlternatives;
-    private List<String> salads;
-}
-````
+## Los que necesitan del análisis son ... 
+Doblado, punch y maquinado CNC ...
