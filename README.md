@@ -21,3 +21,26 @@ TODO ... convenir qué se va a mostrar
 Qué puede ayudar ... para sortear la prioridad ... 
 
 Part number, Hrs, Setup, Piezas por hacer (qty), máquina o comentario ... 
+
+Separado por maquina (3 turnos)
+	Punzonado
+	Doblado
+
+No Separado por maquina pero si lleva turnos (2 turnos)
+	Maquinado Manual (ignorar las máquinas)
+    Láser
+
+Los demás es una simple lista ... ordenadas por prioridad-urgencia (1) y Age
+    Empaque final
+    Empaque a Proveedor
+    Soldadura
+    Spot Weld
+    Time Saver
+    Pulido
+    Rebabeo
+    LIMPIEZA
+    INSERTOS-PEM
+    ENSAMBLE
+    MAQUINADO CNC
+    LIMPIEZA LUZ NEGRA
+    SERIGRAFIA
